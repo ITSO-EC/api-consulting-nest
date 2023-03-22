@@ -11,7 +11,7 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-  app.use(express.static(path.join(__dirname, '..', 'public', 'dist')));
+  // app.use(express.static(path.join(__dirname, '..', 'public', 'dist')));
   app.use(bodyParser.urlencoded({ extended: true }));
   const configService = app.get(ConfigService);
   const port = configService.get('PORT');

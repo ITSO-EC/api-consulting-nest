@@ -5,6 +5,7 @@ import { CreateViewDto } from './dto/create-view.dto';
 import { UpdateViewDto } from './dto/update-view.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
+import * as fs from 'fs';
 
 @Controller('views')
 export class ViewsController {
@@ -15,6 +16,7 @@ export class ViewsController {
   async create(@UploadedFile() image: Express.Multer.File, @Body() createViewDto: CreateViewDto): Promise<View> {
     if (image) {
       createViewDto.imageUrl = `${Date.now()}${extname(image.originalname)}`;
+      await fs.promises.rename(image.path, 'uploads/'+ createViewDto.imageUrl);
     }
     return this.viewService.create(createViewDto);
   }
@@ -34,6 +36,8 @@ export class ViewsController {
   async update(@UploadedFile() image: Express.Multer.File, @Param('id') id: string, @Body() updateViewDto: UpdateViewDto): Promise<View> {
     if (image) {
       updateViewDto.imageUrl = `${Date.now()}${extname(image.originalname)}`;
+      await fs.promises.rename(image.path, 'uploads/'+ updateViewDto.imageUrl);
+
     }
     return this.viewService.update(id, updateViewDto);
   }

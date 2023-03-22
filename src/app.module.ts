@@ -21,7 +21,7 @@ import { PostsModule } from './posts/posts.module';
           // console.log('MONGODB_URL', configService.get('MONGODB_URL'));
           return configService.get('MONGODB_URL');
         })(),
-        dbName: 'prod',
+        dbName: configService.get('MONGODB_DB_NAME'),
 
       }),
       inject: [ConfigService],

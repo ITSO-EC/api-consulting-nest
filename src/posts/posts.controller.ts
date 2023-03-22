@@ -5,6 +5,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
+import * as fs from 'fs';
 
 @Controller('posts')
 export class PostsController {
@@ -15,6 +16,8 @@ export class PostsController {
   async create(@UploadedFile() file: Express.Multer.File, @Body() createPostDto: CreatePostDto): Promise<IPost> {
     if (file) {
       createPostDto.fileUrl = `${Date.now()}${extname(file.originalname)}`;
+      await fs.promises.rename(file.path, 'uploads/'+ createPostDto.fileUrl);
+
     }
     return this.postService.create(createPostDto);
   }
@@ -34,6 +37,8 @@ export class PostsController {
   async update(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() updatePostDto: UpdatePostDto): Promise<IPost> {
     if (file) {
       updatePostDto.fileUrl = `${Date.now()}${extname(file.originalname)}`;
+      await fs.promises.rename(file.path, 'uploads/'+ updatePostDto.fileUrl);
+
     }
     return this.postService.update(id, updatePostDto);
   }

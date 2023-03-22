@@ -5,6 +5,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
+import * as fs from 'fs';
 
 @Controller('categories')
 export class CategoriesController {
@@ -15,6 +16,8 @@ export class CategoriesController {
   async create(@UploadedFile() image: Express.Multer.File, @Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     if (image) {
       createCategoryDto.imageUrl = `${Date.now()}${extname(image.originalname)}`;
+      await fs.promises.rename(image.path, 'uploads/' + createCategoryDto.imageUrl);
+
     }
     return this.categoryService.create(createCategoryDto);
   }
@@ -34,6 +37,7 @@ export class CategoriesController {
   async update(@UploadedFile() image: Express.Multer.File, @Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     if (image) {
       updateCategoryDto.imageUrl = `${Date.now()}${extname(image.originalname)}`;
+      await fs.promises.rename(image.path, 'uploads/' + updateCategoryDto.imageUrl);
     }
     return this.categoryService.update(id, updateCategoryDto);
   }
