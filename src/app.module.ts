@@ -7,6 +7,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CategorySchema } from './categories/category.schema';
 import { PostsModule } from './posts/posts.module';
+import { SwaggerModule } from '@nestjs/swagger';
+import { CommonsModule } from './commons/commons.module';
+import { StaticController } from './static.controller';
 
 @Module({
   imports: [
@@ -27,8 +30,9 @@ import { PostsModule } from './posts/posts.module';
       inject: [ConfigService],
     }),
     PostsModule,
+    CommonsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, StaticController],
   providers: [AppService],
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { IPost } from './post.interface';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -6,7 +6,11 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import * as fs from 'fs';
+import { PaginationQueryDto } from 'src/commons/dto/pagination-query.dto';
+import { PaginationResult } from 'src/commons/utils/paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postService: PostsService) { }
@@ -23,8 +27,8 @@ export class PostsController {
   }
 
   @Get()
-  async findAll(): Promise<IPost[]> {
-    return this.postService.findAll();
+  async findAll(@Query() paginationQueryDto: PaginationQueryDto): Promise<PaginationResult<IPost>> {
+    return this.postService.findAll(paginationQueryDto);
   }
 
   @Get(':id')

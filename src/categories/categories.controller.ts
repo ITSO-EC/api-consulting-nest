@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { Category } from './category.interface';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -6,7 +6,11 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import * as fs from 'fs';
+import { PaginationQueryDto } from 'src/commons/dto/pagination-query.dto';
+import { PaginationResult } from 'src/commons/utils/paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoryService: CategoriesService) { }
@@ -23,8 +27,8 @@ export class CategoriesController {
   }
 
   @Get()
-  async findAll(): Promise<Category[]> {
-    return this.categoryService.findAll();
+  async findAll(@Query() paginationQueryDto: PaginationQueryDto): Promise<PaginationResult<Category>> {
+    return this.categoryService.findAll(paginationQueryDto);
   }
 
   @Get(':id')

@@ -1,21 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PaginateModel } from 'mongoose';
 import { Category } from './category.interface';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { PaginationQueryDto } from 'src/commons/dto/pagination-query.dto';
+import { PaginationResult, paginate } from 'src/commons/utils/paginate';
 
 @Injectable()
 export class CategoriesService {
-  constructor(@InjectModel('Category') private readonly categoryModel: Model<Category>) { }
+  constructor(@InjectModel('Category') private readonly categoryModel: PaginateModel<Category>) { }
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const createdCategory = new this.categoryModel(createCategoryDto);
     return createdCategory.save();
   }
 
-  async findAll(): Promise<Category[]> {
-    return this.categoryModel.find().exec();
+  async findAll(paginationQueryDto: PaginationQueryDto): Promise<PaginationResult<Category>> {
+    return paginate<Category>(this.categoryModel, paginationQueryDto);
   }
 
   async findOne(id: string): Promise<Category> {

@@ -1,22 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PaginateModel } from 'mongoose';
 import { IPost } from './post.interface';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { PaginationQueryDto } from 'src/commons/dto/pagination-query.dto';
+import { PaginationResult, paginate } from 'src/commons/utils/paginate';
 
 @Injectable()
 export class PostsService {
-  constructor(@InjectModel('IPost') private readonly postModel: Model<IPost>) { }
+  constructor(@InjectModel('IPost') private readonly postModel: PaginateModel<IPost>) { }
 
   async create(createPostDto: CreatePostDto): Promise<IPost> {
     const createdPost = new this.postModel(createPostDto);
     return createdPost.save();
   }
 
-  async findAll(): Promise<IPost[]> {
-    return this.postModel.find().exec();
+  async findAll(paginationQueryDto: PaginationQueryDto): Promise<PaginationResult<IPost>> {
+    return paginate<IPost>(this.postModel, paginationQueryDto);
   }
+
 
   async findOne(id: string): Promise<IPost> {
     return this.postModel.findById(id).exec();

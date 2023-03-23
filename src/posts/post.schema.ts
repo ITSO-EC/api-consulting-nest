@@ -1,4 +1,6 @@
 import * as mongoose from 'mongoose';
+import * as mongoPaginate from 'mongoose-paginate-v2';
+import { toJSON } from 'src/commons/plugins/toJSON.plugins';
 
 export const PostSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -9,7 +11,9 @@ export const PostSchema = new mongoose.Schema({
     content: { type: String, required: true },
     number: { type: String, required: true },
     type: { type: String, required: true },
-    // status: { type: String, required: true },
+    status: { type: String, required: true },
     reference: { type: String, required: true },
     category: { type: mongoose.Types.ObjectId, ref: "Category", required: true },
 });
+PostSchema.plugin(mongoPaginate);
+PostSchema.plugin(toJSON);

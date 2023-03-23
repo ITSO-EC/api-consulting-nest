@@ -1,4 +1,6 @@
-export interface IPost {
+import { Document } from 'mongoose';
+
+export interface IPost extends Document {
     id?: string;
     title: string;
     ro: string;
@@ -8,6 +10,7 @@ export interface IPost {
     content: string;
     number: string;
     type: string;
+    status: string;
     isVisible: string;
     reference: string;
     category: string;
