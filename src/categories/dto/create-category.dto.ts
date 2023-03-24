@@ -54,7 +54,7 @@ export class CreateCategoryDto {
 
     @ApiProperty({
         description: 'La imagen de la categoría',
-        type: 'string',
+        type: 'file',
         format: 'binary',
     })
     image: Express.Multer.File;

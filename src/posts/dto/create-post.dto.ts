@@ -18,12 +18,17 @@ export class CreatePostDto {
   @ApiProperty({ example: "Type of reform" })
   typeReform: string;
 
-  @IsString()
+  // @IsNotEmpty()
+  // @IsString()
   @ApiProperty({ example: "https://example.com/file.pdf" })
   fileUrl: string;
 
-  @IsString()
-  file: string;
+  @ApiProperty({
+    description: 'La imagen del post',
+    type: 'file',
+    format: 'binary',
+  })
+  file: Express.Multer.File;
 
   @IsNotEmpty()
   @IsString()
