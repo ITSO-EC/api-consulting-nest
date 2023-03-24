@@ -18,7 +18,7 @@ export interface PaginationQueryDto {
     populate?: string;
 }
 
-interface IPaginateModel<T extends mongoose.Document> extends mongoose.PaginateModel<T> {}
+interface IPaginateModel<T extends mongoose.Document> extends mongoose.PaginateModel<T> { }
 
 export async function paginate<T extends mongoose.Document>(
     model: IPaginateModel<T>,
@@ -28,6 +28,16 @@ export async function paginate<T extends mongoose.Document>(
 
     const filterObj = JSON.parse(filter);
     const sortObj = JSON.parse(sort);
+
+    if (filterObj.name) {
+        const regex = new RegExp(filterObj.name, 'i');
+        filterObj.name = { $regex: regex };
+    }
+
+    if (filterObj.title) {
+        const regex = new RegExp(filterObj.title, 'i');
+        filterObj.title = { $regex: regex };
+    }
 
     const options = { page, limit, sort: sortObj, populate };
 

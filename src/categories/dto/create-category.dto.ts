@@ -25,6 +25,8 @@ export class CreateCategoryDto {
         description: 'La URL de la imagen de la categoría',
         required: false,
     })
+
+    
     @IsOptional()
     @IsString()
     imageUrl: string;
