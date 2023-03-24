@@ -30,7 +30,7 @@ export class CreateViewDto {
 
     @ApiProperty({
         description: 'The image file to upload.',
-        type: 'string',
+        type: 'file',
         format: 'binary',
     })
     image: Express.Multer.File;
