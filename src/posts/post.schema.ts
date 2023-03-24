@@ -14,6 +14,8 @@ export const PostSchema = new mongoose.Schema({
     status: { type: String, required: true },
     reference: { type: String, required: true },
     category: { type: mongoose.Types.ObjectId, ref: "Category", required: true },
-});
+}, { timestamps: true });
+
+
 PostSchema.plugin(mongoPaginate);
 PostSchema.plugin(toJSON);
