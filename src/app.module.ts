@@ -10,6 +10,8 @@ import { PostsModule } from './posts/posts.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import { CommonsModule } from './commons/commons.module';
 import { StaticController } from './static.controller';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { StaticController } from './static.controller';
     }),
     PostsModule,
     CommonsModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController, StaticController],
   providers: [AppService],

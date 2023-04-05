@@ -20,7 +20,6 @@ export class PostsService {
     return paginate<IPost>(this.postModel, paginationQueryDto);
   }
 
-
   async findOne(id: string): Promise<IPost> {
     return this.postModel.findById(id).exec();
   }
